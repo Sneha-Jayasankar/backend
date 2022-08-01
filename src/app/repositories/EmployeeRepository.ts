@@ -15,10 +15,22 @@ export class EmployeeRepository{
         return employeeRepo.save(employeeDetails);
     }
 
-    //getemployeebyid
-    public async updateEmployee(id:string) {
+    //updateemployee
+    public async updateEmployee(id:string, employeeDetails:Employee) {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.findOne(id);
+        return employeeRepo.update(id,employeeDetails);
     }
+
+    //getemployeebyid
+    public async getEmployeebyId(id:string) {
+    const employeeRepo = getConnection().getRepository(Employee);
+    return employeeRepo.findOne(id);
+    }
+
+    //delete employee
+    public async deleteEmployee(id:string) {
+        const employeeRepo = getConnection().getRepository(Employee);
+        return employeeRepo.softDelete(id);
+        }
 
 }

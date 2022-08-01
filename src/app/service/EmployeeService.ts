@@ -37,6 +37,22 @@ export class EmployeeService{
             });
             return updateEmployee;
         }
-    
-    }
+
+        //getemployeebyid
+        public async getEmployeebyId(employeeId: string) {
+            const emp= await this.employeeRepo.getEmployeebyId(employeeId);
+            // if(!emp){
+            //     throw new EntityNotFoundException({
+            //         CODE:"404",
+            //         MESSAGE:"Employee with the given id is not found"
+            //     })
+            // }
+            return emp;
+        }
+
+        //delete 
+        public async deleteEmployee(employeeId: string) {
+            return await this.employeeRepo.deleteEmployee(employeeId);
+        }
+}
 

@@ -14,10 +14,13 @@ class DepartmentController extends AbstractController {
   protected initializeRoutes() {
     this.router.get(`${this.path}`, this.getalldepartments);
     this.router.post(`${this.path}`, this.createdepartment);
-
+    this.router.put(`${this.path}/:id`, this.updatedepartment);
+    this.router.get(`${this.path}/:id`, this.getdepartmentbyid);
+    this.router.delete(`${this.path}/:id`, this.deletedepartment);
   }
 
   //functions
+  //get all
   private getalldepartments = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
       const data: any =await this.departmentservice.getAllDepartments();
@@ -27,7 +30,7 @@ class DepartmentController extends AbstractController {
       return next(error);
     }
   }
-
+//create
   private createdepartment=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
     try{
         const data:any = await this.departmentservice.createDepartment(request.body);
@@ -38,6 +41,44 @@ class DepartmentController extends AbstractController {
         return next(error);
     }
   }
+
+  //update
+  private updatedepartment=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
+    try{
+        const data:any = await this.departmentservice.updateDepartment(request.params.id,request.body);
+        response.status(200);
+        response.send(this.fmt.formatResponse(data,Date.now() - request.startTime, "OK", 1));
+    }
+    catch(error){
+        return next(error);
+    }
+  }
+
+  //get department by id
+  private getdepartmentbyid=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
+    try{
+        const data:any = await this.departmentservice.getDepartmentbyId(request.params.id);
+        response.status(200);
+        response.send(this.fmt.formatResponse(data,Date.now() - request.startTime, "OK", 1));
+    }
+    catch(error){
+        return next(error);
+    }
+  }
+
+  //delete
+private deletedepartment=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
+  try{
+      const data:any = await this.departmentservice.deleteDepartment(request.params.id);
+      response.status(200);
+      response.send(this.fmt.formatResponse(data,Date.now() - request.startTime, "OK", 1));
+  }
+  catch(error){
+      return next(error);
+  }
+}
+
+
 }
 
 export default DepartmentController;

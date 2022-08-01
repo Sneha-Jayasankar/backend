@@ -15,6 +15,8 @@ class EmployeeController extends AbstractController {
     this.router.get(`${this.path}`, this.getallemployees);
     this.router.post(`${this.path}`, this.createemployee);
     this.router.put(`${this.path}/:id`, this.updateemployee);
+    this.router.get(`${this.path}/:id`, this.getemployeebyid);
+    this.router.delete(`${this.path}/:id`, this.deleteemployee);
 
   }
 
@@ -54,6 +56,30 @@ private updateemployee=async (request:RequestWithUser, response:Response,next:Ne
         return next(error);
     }
   }
+
+//get employee by id
+private getemployeebyid=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
+  try{
+      const data:any = await this.employeeservice.getEmployeebyId(request.params.id);
+      response.status(200);
+      response.send(this.fmt.formatResponse(data,Date.now() - request.startTime, "OK", 1));
+  }
+  catch(error){
+      return next(error);
+  }
+}
+
+//delete
+private deleteemployee=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
+  try{
+      const data:any = await this.employeeservice.deleteEmployee(request.params.id);
+      response.status(200);
+      response.send(this.fmt.formatResponse(data,Date.now() - request.startTime, "OK", 1));
+  }
+  catch(error){
+      return next(error);
+  }
+}
 
 }
 
