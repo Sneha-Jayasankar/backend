@@ -21,7 +21,7 @@ class EmployeeController extends AbstractController {
   //get all
   private getallemployees = async (request: RequestWithUser, response: Response, next: NextFunction) => {
     try {
-      const data: any = this.employeeservice.getAllEmployees();
+      const data: any = await this.employeeservice.getAllEmployees();
       response.status(200);
       response.send(this.fmt.formatResponse(data, Date.now() - request.startTime, "OK", 1));
     } catch (error) {
@@ -40,6 +40,8 @@ class EmployeeController extends AbstractController {
         return next(error);
     }
   }
+
+//update
 
 }
 
