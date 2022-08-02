@@ -40,7 +40,7 @@ import { Department } from "./Department";
             @JoinColumn()
             public address: Address;
     
-            @Column({nullable: true})
-            public employeeaddress_id:string;
+            // @Column({nullable: true})
+            // public employeeaddress_id:string;
 
 }
