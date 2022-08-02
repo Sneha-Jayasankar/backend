@@ -21,27 +21,30 @@ export class EmployeeService{
            return this.employeeRepo.getAllEmployees();
         }
         //create
-        public async createEmployee(employeeDetails: any,addressid:string) {
+        public async createEmployee(employeeDetails: any) {
             // console.log(id);
             try {
-                // const newAddress = plainToClass(Address, employeeDetails.address)
-                // console.log(employeeDetails.address);
-                // const newEmployee = plainToClass(Employee, employeeDetails);
-                // newEmployee.address = newAddress;
-                const newEmployee=plainToClass(Employee,{
-                    name: employeeDetails.name,
-                    departmentId: employeeDetails.departmentId,
-                    joiningdate:employeeDetails.joiningdate,
-                    role:employeeDetails.role,
-                    status:employeeDetails.status,
-                    experience:employeeDetails.experience,
-                    username:employeeDetails.username,
-                    password:employeeDetails.password? await bcrypt.hash(employeeDetails.password,10):'',
-                    employeeaddress_id:addressid,
-                    // employeeDetails,
-                    // address: newAddress,
-                    // isActive: true,
-                });
+                const newEmployee = new Employee();
+                newEmployee.name = employeeDetails.name
+                newEmployee.password = employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): ''
+                newEmployee.username = employeeDetails.username
+                newEmployee.role = employeeDetails.role
+                newEmployee.status = employeeDetails.status
+                newEmployee.experience = employeeDetails.experience,
+                newEmployee.joiningdate = employeeDetails.joiningdate
+                newEmployee.addressId = employeeDetails.address.addressId
+                newEmployee.departmentId = employeeDetails.departmentId
+            
+                if(employeeDetails.address){
+                      newEmployee.address = new Address()
+                      newEmployee.address.address_line1= employeeDetails.address.address_line1,
+                      newEmployee.address.address_line2= employeeDetails.address.address_line2,
+                      newEmployee.address.city = employeeDetails.address.city,
+                      newEmployee.address.state = employeeDetails.address.state,
+                      newEmployee.address.pin = employeeDetails.address.pin
+                }
+          console.log(newEmployee)
+
                 const save = await this.employeeRepo.saveEmployeeDetails(newEmployee);
                 return save;
             } catch (err) {
@@ -80,7 +83,7 @@ export class EmployeeService{
             return await this.employeeRepo.deleteEmployee(employeeId);
         }
 
-        //login
+        // Add in EmployeeService.ts
 
      public employeeLogin = async (
         username: string,

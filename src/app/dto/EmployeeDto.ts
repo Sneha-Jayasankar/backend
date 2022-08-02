@@ -35,7 +35,7 @@ export class EmployeeDto {
     @Type(()=>AddressDto)
     public address: AddressDto;
 
-    @ValidateNested({each: true})
-    @Type(()=>DepartmentDto)
-    public department?: DepartmentDto
+    // @ValidateNested({each: true})
+    // @Type(()=>DepartmentDto)
+    // public department?: DepartmentDto
 }

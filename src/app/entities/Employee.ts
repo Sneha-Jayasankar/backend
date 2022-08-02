@@ -33,14 +33,14 @@ import { Department } from "./Department";
             @JoinColumn()
             public department: Department;
 
-            @Column({ nullable: false })
+            @Column({ nullable: true })
             public departmentId: string;
 
         @OneToOne(()=> Address,{cascade:true})
             @JoinColumn()
             public address: Address;
     
-            // @Column({nullable: true})
-            // public employeeaddress_id:string;
+            @Column({nullable: true})
+                public addressId:string;
 
-}
+    }

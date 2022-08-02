@@ -42,17 +42,9 @@ class EmployeeController extends AbstractController {
 
   //create employee
   private createemployee=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
-    try{
-      // console.log(request.body);
-        const adr:any=await this.addressservice.createAddress(request.body.address);
-        const emp:any = await this.employeeservice.createEmployee(request.body,adr.id);
-        // const adr:any=await this.addressservice.createAddress(request.body.address,emp.id);
-  
+    try{ 
+        const data:any = await this.employeeservice.createEmployee(request.body)
         response.status(200);
-        const data = {
-          "employee": emp,
-          // "address": adr
-        }
         response.send(this.fmt.formatResponse(data,Date.now() - request.startTime, "OK", 1));
     }
     catch(error){
