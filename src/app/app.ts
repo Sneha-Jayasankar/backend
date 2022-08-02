@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import { Controller } from "./util/rest/controller";
 import RequestWithUser from "./util/rest/request";
+import errorMiddleware from "./middlewares/errorMiddleware"
 import cors = require("cors");
 /**
  * Express application wrapper class to centralize initialization
@@ -21,6 +22,7 @@ class App extends EventEmitter {
 
     this.initializeMiddlewares();
     this.initializeControllers(controllers);
+    this.initializeErrorHandling();
   }
 
   /**
@@ -41,6 +43,8 @@ class App extends EventEmitter {
 
   /**
    * Adds desired middleware to app
+   * gets executed in the defined order
+   * since all these are imported they can be called third party middleware
    */
   private initializeMiddlewares() {
     this.app.use(bodyParser.json());
@@ -50,8 +54,10 @@ class App extends EventEmitter {
 
 
     // use for computing processing time on response
+    //user defined
     this.app.use((request: RequestWithUser, response: express.Response, next: express.NextFunction) => {
       request.startTime = Date.now();
+      // console.log(request.startTime);
       next();
     });
   } 
@@ -64,6 +70,10 @@ class App extends EventEmitter {
     controllers.forEach((controller) => {
       this.app.use("/", controller.router);
     });
+  }
+
+  private initializeErrorHandling(){
+    this.app.use(errorMiddleware);
   }
 
 }

@@ -18,9 +18,11 @@ export class EmployeeService{
             try {
                 const newEmployee = plainToClass(Employee, {
                     name: employeeDetails.name,
-                    // username: employeeDetails.username,
-                    // age: employeeDetails.age,
                     departmentId: employeeDetails.departmentId,
+                    joiningdate:employeeDetails.joiningdate,
+                    role:employeeDetails.role,
+                    status:employeeDetails.status,
+                    experience:employeeDetails.experience
                     // isActive: true,
                 });
                 const save = await this.employeeRepo.saveEmployeeDetails(newEmployee);
@@ -31,11 +33,20 @@ export class EmployeeService{
         }
         //update
         public async updateEmployee(employeeId: string, employeeDetails: any) {
+            try{
             const employeeRepo = getConnection().getRepository(Employee);
             const updateEmployee = await employeeRepo.update({ id: employeeId, deletedAt: null }, {
                 name: employeeDetails.name ? employeeDetails.name : undefined,
+                // departmentId: employeeDetails.department_id ? employeeDetails.department_id:undefined,
+                // joiningdate:employeeDetails.joiningdate? employeeDetails.joiningdate:undefined,
+                // role:employeeDetails.role? employeeDetails.role:undefined,
+                // status:employeeDetails.status? employeeDetails.status:undefined,
+                // experience:employeeDetails.experience? employeeDetails.experience:undefined
             });
             return updateEmployee;
+        } catch (err) {
+            throw new HttpException(400, "Failed to update employee","failed");
+        }
         }
 
         //getemployeebyid
