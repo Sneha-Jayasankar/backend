@@ -14,7 +14,7 @@ import EmployeeController from "./EmployeeController";
 import HealthController from "./HealthController";
 export default [
   new HealthController(),
-  new EmployeeController(new EmployeeService( new EmployeeRepository()),new AddressService(new AddressRepository())),
+  new EmployeeController(new EmployeeService( new EmployeeRepository(),new AddressService(new AddressRepository()))),
   new DepartmentController(new DepartmentService(new DepartmentRepository())),
   new AddressController(new AddressService(new AddressRepository()))
 ];

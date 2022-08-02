@@ -25,7 +25,7 @@ export class AddressService{
                     city:addressDetails.city,
                     state:addressDetails.city,
                     pin:addressDetails.pin,
-                    // employee_id:id,
+                    // address_id:id,
                 });
                 // console.log(id);
                 const save = await this.addressRepo.saveAddressDetails(newAddress);
@@ -36,13 +36,23 @@ export class AddressService{
         }
 
         //update
-        // public async updateAddress(id:string,addressDetails: any) {
+        public async updateAddress(addressId:string,addressDetails: any) {
             
-        //     const addressRepo = getConnection().getRepository(Address);
+            const addressRepo = getConnection().getRepository(Address);
+            const updateAddress = await addressRepo.update({ id: addressId, deletedAt: null }, {
+                address_line1: addressDetails.address_line1,
+                address_line2:addressDetails.address_line2,
+                city:addressDetails.city,
+                state:addressDetails.state,
+                pin:addressDetails.pin
+            });
+
+            // const updateAddress=await addressRepo
+            return updateAddress;
             
            
-        //     return await this.addressRepo.updateAddress(id,addressDetails);
-        // }
+            // return await this.addressRepo.updateAddress(id,addressDetails);
+        }
 
         //get Address by id
         public async getAddressbyId(addressId: string) {

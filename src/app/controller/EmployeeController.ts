@@ -10,9 +10,10 @@ import { Address } from "../entities/Address";
 import { plainToClass } from "class-transformer";
 import { ParameterValidationDto } from "../dto/ParametervalidationDto";
 import authorizationMiddleware from "../middlewares/authorizationMiddleware";
+import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
 
 class EmployeeController extends AbstractController {
-  constructor(private employeeservice: EmployeeService,private addressservice:AddressService) {
+  constructor(private employeeservice: EmployeeService) {
     super(`${APP_CONSTANTS.apiPrefix}/employee`);
     this.initializeRoutes();
   }
@@ -55,15 +56,9 @@ class EmployeeController extends AbstractController {
 //update employee
 private updateemployee=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
     try{
-      // console.log(request.params.id);
       const variable=request.params.id;
-        const emp:any = await this.employeeservice.updateEmployee(request.params.id,request.body);
-        // const adr = await this.addressservice.updateAddress(variable,request.body.address);
-        const data = {
-          "employee": emp,
-          // "address": adr
-        }
-        response.send(this.fmt.formatResponse(data, Date.now() - request.startTime, 'OK'));
+      const updateEmp : UpdateEmployeeDto = request.body
+      response.send(await this.employeeservice.updateEmployee(variable, updateEmp));
       }
       catch(error) {
         return next(error);

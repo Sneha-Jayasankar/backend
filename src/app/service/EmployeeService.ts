@@ -10,10 +10,12 @@ import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import UserNotAuthorizedException from "../exception/UserNotAuthorizedException";
 import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsernameOrPasswordException";
+import { response } from "express";
+import { AddressService } from "./AddressService";
 
 export class EmployeeService{
     
-        constructor(private employeeRepo:EmployeeRepository){
+        constructor(private employeeRepo:EmployeeRepository,private addressservice:AddressService){
             
         }
         //getall
@@ -55,14 +57,25 @@ export class EmployeeService{
         public async updateEmployee(employeeId: string, employeeDetails: any) {
             try{
             const employeeRepo = getConnection().getRepository(Employee);
+            // const addressRepo=getConnection().getRepository(Address);
             const updateEmployee = await employeeRepo.update({ id: employeeId, deletedAt: null }, {
                 name: employeeDetails.name ? employeeDetails.name : undefined,
-                // departmentId: employeeDetails.department_id ? employeeDetails.department_id:undefined,
-                // joiningdate:employeeDetails.joiningdate? employeeDetails.joiningdate:undefined,
-                // role:employeeDetails.role? employeeDetails.role:undefined,
-                // status:employeeDetails.status? employeeDetails.status:undefined,
-                // experience:employeeDetails.experience? employeeDetails.experience:undefined
+                departmentId: employeeDetails.departmentId ? employeeDetails.departmentId:undefined,
+                joiningdate:employeeDetails.joiningdate? employeeDetails.joiningdate:undefined,
+                role:employeeDetails.role? employeeDetails.role:undefined,
+                status:employeeDetails.status? employeeDetails.status:undefined,
+                experience:employeeDetails.experience? employeeDetails.experience:undefined,
+                addressId:employeeDetails.addressId
             });
+            const updateaddress = plainToClass(Address, {
+              id: employeeDetails.addressId,
+              address_line1:employeeDetails.address_line1,
+              address_line2:employeeDetails.address_line2,
+              city: employeeDetails.city,
+              state: employeeDetails.state,
+              pin: employeeDetails.pin
+            })
+            await this.addressservice.updateAddress(employeeDetails.addressId,updateaddress);
             return updateEmployee;
         } catch (err) {
             throw new HttpException(400, "Failed to update employee","failed");
@@ -83,7 +96,7 @@ export class EmployeeService{
             return await this.employeeRepo.deleteEmployee(employeeId);
         }
 
-        // Add in EmployeeService.ts
+        // login
 
      public employeeLogin = async (
         username: string,
