@@ -22,11 +22,11 @@ import { Employee } from "./Employee";
         @Column({ nullable: true })
         public pin: number;
 
-        @OneToOne(()=> Employee,{cascade:true})
-            @JoinColumn()
-            public employee: Employee;
+        // @OneToOne(()=> Employee,{cascade:true})
+        //     @JoinColumn()
+        //     public employee: Employee;
     
-            @Column({nullable: true})
-            public employee_id:string;
+        //     @Column({nullable: true})
+        //     public employee_id:string;
 
     }

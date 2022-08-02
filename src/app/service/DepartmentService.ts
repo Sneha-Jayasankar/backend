@@ -1,8 +1,10 @@
 import { plainToClass } from "class-transformer";
 import { getConnection } from "typeorm";
 import { Department } from "../entities/Department";
+import EntityNotFoundException from "../exception/EntityNotFoundException";
 import HttpException from "../exception/HttpException";
 import { DepartmentRepository } from "../repositories/DepartmentRepository";
+import { ErrorCodes } from "../util/errorCode";
 
 export class DepartmentService{
     
@@ -43,6 +45,9 @@ export class DepartmentService{
         //get department by id
         public async getDepartmentbyId(departmentId: string) {
             const dept= await this.departmentRepo.getDepartmentbyId(departmentId);
+            if(!dept){
+                throw new EntityNotFoundException(ErrorCodes.EMPLOYEE_WITH_ID_NOT_FOUND);
+            }
             return dept;
     
         }

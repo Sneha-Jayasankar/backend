@@ -34,4 +34,14 @@ export class EmployeeRepository{
         return employeeRepo.softDelete(id);
         }
 
+    //login
+
+    public async getEmployeeByUsername(username: string) {
+    const employeeRepo = getConnection().getRepository(Employee);
+    const employeeDetail = await employeeRepo.findOne({
+        where: { username },
+    });
+    return employeeDetail;
+}
+
 }

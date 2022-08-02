@@ -15,11 +15,11 @@ export class AddressRepository{
     }
 
     //update
-    public async updateAddress(id:string,addressDetails: Address) {
-        // console.log(id);
-        const addressRepo = getConnection().getRepository(Address);
-        return addressRepo.update({ employee_id: id },addressDetails);
-    }
+    // public async updateAddress(id:string,addressDetails: Address) {
+    //     // console.log(id);
+    //     const addressRepo = getConnection().getRepository(Address);
+    //     return addressRepo.update({ employee_id: id },addressDetails);
+    // }
 
      //getdddressbyid
      public async getAddressbyId(id:string) {
