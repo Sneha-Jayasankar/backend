@@ -93,11 +93,15 @@ export class EmployeeService{
             return emp;
         }
 
-        //delete 
-        public async deleteEmployee(employeeId: string) {
-            return await this.employeeRepo.deleteEmployee(employeeId);
+        //softdelete 
+        public async softdeleteEmployee(employeeId: string) {
+            return await this.employeeRepo.softdeleteEmployee(employeeId);
         }
 
+        //harddelete-not caliing
+        public async harddeleteEmployee(employeeId: string) {
+          return await this.employeeRepo.hardDeleteEmployeeById(employeeId);
+      }
         // login
 
      public employeeLogin = async (

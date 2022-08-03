@@ -5,9 +5,6 @@ import APP_CONSTANTS from "../constants";
 import { EmployeeService } from "../service/EmployeeService";
 import validationMiddleware from "../middlewares/validationMiddleware";
 import { EmployeeDto } from "../dto/EmployeeDto";
-import { AddressService } from "../service/AddressService";
-import { Address } from "../entities/Address";
-import { plainToClass } from "class-transformer";
 import { ParameterValidationDto } from "../dto/ParametervalidationDto";
 import authorizationMiddleware from "../middlewares/authorizationMiddleware";
 import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
@@ -20,11 +17,11 @@ class EmployeeController extends AbstractController {
 
   //routes
   protected initializeRoutes() {
-    this.router.get(`${this.path}`,/*authorizationMiddleware(['admin','hr']),*/ this.getallemployees);
-    this.router.post(`${this.path}`,validationMiddleware(EmployeeDto,APP_CONSTANTS.body), this.createemployee);
-    this.router.put(`${this.path}/:id`,validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params), this.updateemployee);
-    this.router.get(`${this.path}/:id`,validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params), this.getemployeebyid);
-    this.router.delete(`${this.path}/:id`,validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params), this.deleteemployee);
+    this.router.get(`${this.path}`,authorizationMiddleware(['admin','hr']), this.getallemployees);
+    this.router.post(`${this.path}`,authorizationMiddleware(['admin','hr']),validationMiddleware(EmployeeDto,APP_CONSTANTS.body), this.createemployee);
+    this.router.put(`${this.path}/:id`,authorizationMiddleware(['admin','hr']),validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params),validationMiddleware(UpdateEmployeeDto,APP_CONSTANTS.body), this.updateemployee);
+    this.router.get(`${this.path}/:id`,authorizationMiddleware(['admin','hr']),validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params), this.getemployeebyid);
+    this.router.delete(`${this.path}/:id`,authorizationMiddleware(['admin','hr']),validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params), this.deleteemployee);
     this.router.post(`${this.path}/login`,this.login);
   }
 
@@ -77,10 +74,10 @@ private getemployeebyid=async (request:RequestWithUser, response:Response,next:N
   }
 }
 
-//delete
+//softdelete
 private deleteemployee=async (request:RequestWithUser, response:Response,next:NextFunction)=>{
   try{
-      const data:any = await this.employeeservice.deleteEmployee(request.params.id);
+      const data:any = await this.employeeservice.softdeleteEmployee(request.params.id);
       response.status(200);
       response.send(this.fmt.formatResponse(data,Date.now() - request.startTime, "OK", 1));
   }
@@ -88,6 +85,7 @@ private deleteemployee=async (request:RequestWithUser, response:Response,next:Ne
       return next(error);
   }
 }
+//harddelete
 
 // login
 

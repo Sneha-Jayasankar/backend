@@ -28,13 +28,19 @@ export class EmployeeRepository{
     return employeeRepo.findOne(id,{ relations: relations});
     }
 
-    //delete employee
-    public async deleteEmployee(id:string) {
+    //softdelete employee
+    public async softdeleteEmployee(id:string) {
         const employeeRepo = getConnection().getRepository(Employee);
         const employee = await this.getEmployeebyId(id, ["address"]);
         return employeeRepo.softRemove(employee);
         }
 
+
+    //harddelete employee-not calling
+    public async hardDeleteEmployeeById(id: string) {
+        const employeeRepo = getConnection().getRepository(Employee);
+        return employeeRepo.delete({id});
+    }
     //login
 
     public async getEmployeeByUsername(username: string) {
