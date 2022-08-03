@@ -23,15 +23,16 @@ export class EmployeeRepository{
     }
 
     //getemployeebyid
-    public async getEmployeebyId(id:string) {
+    public async getEmployeebyId(id:string, relations: string[] = ["department", "address"]) {
     const employeeRepo = getConnection().getRepository(Employee);
-    return employeeRepo.findOne(id,{ relations: ['department','address']});
+    return employeeRepo.findOne(id,{ relations: relations});
     }
 
     //delete employee
     public async deleteEmployee(id:string) {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.softDelete(id);
+        const employee = await this.getEmployeebyId(id, ["address"]);
+        return employeeRepo.softRemove(employee);
         }
 
     //login
