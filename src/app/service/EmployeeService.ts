@@ -26,25 +26,27 @@ export class EmployeeService{
         public async createEmployee(employeeDetails: any) {
             // console.log(id);
             try {
+              const newAddress = new Address()
+              if(employeeDetails.address){
+                
+                newAddress.address_line1= employeeDetails.address.address_line1,
+                newAddress.address_line2= employeeDetails.address.address_line2,
+                newAddress.city = employeeDetails.address.city,
+                newAddress.state = employeeDetails.address.state,
+                newAddress.pin = employeeDetails.address.pin
+          }
                 const newEmployee = new Employee();
                 newEmployee.name = employeeDetails.name
                 newEmployee.password = employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): ''
                 newEmployee.username = employeeDetails.username
                 newEmployee.role = employeeDetails.role
                 newEmployee.status = employeeDetails.status
-                newEmployee.experience = employeeDetails.experience,
+                newEmployee.experience = employeeDetails.experience
                 newEmployee.joiningdate = employeeDetails.joiningdate
-                newEmployee.addressId = employeeDetails.address.addressId
-                newEmployee.departmentId = employeeDetails.departmentId
+                newEmployee.departmentId=employeeDetails.departmentId
+                newEmployee.address = newAddress;
             
-                if(employeeDetails.address){
-                      newEmployee.address = new Address()
-                      newEmployee.address.address_line1= employeeDetails.address.address_line1,
-                      newEmployee.address.address_line2= employeeDetails.address.address_line2,
-                      newEmployee.address.city = employeeDetails.address.city,
-                      newEmployee.address.state = employeeDetails.address.state,
-                      newEmployee.address.pin = employeeDetails.address.pin
-                }
+             
           console.log(newEmployee)
 
                 const save = await this.employeeRepo.saveEmployeeDetails(newEmployee);
