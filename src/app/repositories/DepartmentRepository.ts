@@ -11,7 +11,7 @@ export class DepartmentRepository{
         return departmentrepo.find();
     }
     //create
-    public async saveDepartmentDetails(departmentDetails: DepartmentDto):Promise<DepartmentDto & Department> {
+    public async saveDepartmentDetails(departmentDetails: DepartmentDto):Promise<Department> {
         const departmentRepo = getConnection().getRepository(Department);
         return departmentRepo.save(departmentDetails);
     }
@@ -30,7 +30,7 @@ export class DepartmentRepository{
 
     //delete 
     public async deleteDepartment(id:string): Promise<void>{
-        const departmentRepo=getConnection().getRepository(Department);
+        const departmentRepo = getConnection().getRepository(Department);
         departmentRepo.softDelete(id);
     }
 }
