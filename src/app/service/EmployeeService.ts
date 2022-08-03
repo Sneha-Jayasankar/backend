@@ -60,15 +60,6 @@ export class EmployeeService{
             try{
             const employeeRepo = getConnection().getRepository(Employee);
             // const addressRepo=getConnection().getRepository(Address);
-            const updateEmployee = await employeeRepo.update({ id: employeeId, deletedAt: null }, {
-                name: employeeDetails.name ? employeeDetails.name : undefined,
-                departmentId: employeeDetails.departmentId ? employeeDetails.departmentId:undefined,
-                joiningdate:employeeDetails.joiningdate? employeeDetails.joiningdate:undefined,
-                role:employeeDetails.role? employeeDetails.role:undefined,
-                status:employeeDetails.status? employeeDetails.status:undefined,
-                experience:employeeDetails.experience? employeeDetails.experience:undefined,
-                addressId:employeeDetails.addressId
-            });
             const updateaddress = plainToClass(Address, {
               id: employeeDetails.addressId,
               address_line1:employeeDetails.address_line1,
@@ -77,6 +68,15 @@ export class EmployeeService{
               state: employeeDetails.state,
               pin: employeeDetails.pin
             })
+            const updateEmployee = await employeeRepo.update({ id: employeeId, deletedAt: null }, {
+                name: employeeDetails.name ? employeeDetails.name : undefined,
+                departmentId: employeeDetails.departmentId ? employeeDetails.departmentId:undefined,
+                joiningdate:employeeDetails.joiningdate? employeeDetails.joiningdate:undefined,
+                role:employeeDetails.role? employeeDetails.role:undefined,
+                status:employeeDetails.status? employeeDetails.status:undefined,
+                experience:employeeDetails.experience? employeeDetails.experience:undefined,
+                
+            });
             await this.addressservice.updateAddress(employeeDetails.addressId,updateaddress);
             return updateEmployee;
         } catch (err) {
