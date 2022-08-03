@@ -1,5 +1,5 @@
 import { plainToClass } from "class-transformer";
-import { getConnection } from "typeorm";
+import { getConnection, UpdateResult } from "typeorm";
 import { DepartmentDto } from "../dto/DepartmentDto";
 import { UpdateDepartmentDto } from "../dto/UpdateDepartmentDto";
 import { Department } from "../entities/Department";
@@ -14,12 +14,12 @@ export class DepartmentService{
             
         }
         //getall
-        getAllDepartments(){
+        getAllDepartments(): Promise<Department[]>{
            return this.departmentRepo.getAllDepartments();
         }
 
         //create
-        public async createDepartment(departmentDetails: DepartmentDto) {
+        public async createDepartment(departmentDetails: DepartmentDto):Promise<DepartmentDto & Department> {
             try {
                 const save = await this.departmentRepo.saveDepartmentDetails(departmentDetails);
                 return save;
@@ -29,7 +29,7 @@ export class DepartmentService{
         }
 
         //update
-        public async updateDepartment(departmentId: string, departmentDetails: UpdateDepartmentDto) {
+        public async updateDepartment(departmentId: string, departmentDetails: UpdateDepartmentDto):Promise<UpdateResult> {
         
             const updateDepartment = await this.departmentRepo.updateDepartment(departmentId,departmentDetails)
             if(!updateDepartment){
@@ -39,7 +39,7 @@ export class DepartmentService{
         }
 
         //get department by id
-        public async getDepartmentbyId(departmentId: string) {
+        public async getDepartmentbyId(departmentId: string): Promise<Department> {
             const dept= await this.departmentRepo.getDepartmentbyId(departmentId);
             if(!dept){
                 throw new EntityNotFoundException(ErrorCodes.EMPLOYEE_WITH_ID_NOT_FOUND);

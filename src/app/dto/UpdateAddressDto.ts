@@ -1,6 +1,10 @@
 import { IsString } from "class-validator";
 
 export class UpdateAddressDto{
+
+    // @IsString()
+    // public addressId: string;
+
     @IsString()
     public address_line1: string;
 

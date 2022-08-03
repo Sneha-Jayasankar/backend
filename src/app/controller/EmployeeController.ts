@@ -51,7 +51,7 @@ class EmployeeController extends AbstractController {
   //functions
 
   //get all employees
-  private getallemployees = async (request: RequestWithUser, response: Response, next: NextFunction) => {
+  private getallemployees = async (request: RequestWithUser, response: Response, next: NextFunction) =>  {
     try {
       const data: any = await this.employeeservice.getAllEmployees();
       response.status(200);
@@ -108,7 +108,6 @@ class EmployeeController extends AbstractController {
       return next(error);
     }
   }
-  //harddelete
 
   // login
 

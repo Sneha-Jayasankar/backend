@@ -15,8 +15,8 @@ function validationMiddleware<T>(type: any, parameter: string, skipMissingProper
   return (req, res, next) => {
     let validatevariable:any;
 
-    if(parameter=='body') validatevariable=plainToClass(type,req.body)
-    else if(parameter=='params') validatevariable=plainToClass(type,req.params)
+    if(parameter==APP_CONSTANTS.body) validatevariable=plainToClass(type,req.body)
+    else if(parameter==APP_CONSTANTS.params) validatevariable=plainToClass(type,req.params)
     // const requestBody = plainToClass(type, req.body);
 
     validate(
@@ -26,7 +26,7 @@ function validationMiddleware<T>(type: any, parameter: string, skipMissingProper
           const errorDetail = ErrorCodes.VALIDATION_ERROR;
           next(new HttpException(400, errorDetail.MESSAGE, errorDetail.CODE, errors));
         } else {
-          if(parameter=='body')
+          if(parameter==APP_CONSTANTS.body)
             req.body = validatevariable;
 
           next();

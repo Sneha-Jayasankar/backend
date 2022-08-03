@@ -6,10 +6,11 @@ import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import UserNotAuthorizedException from "../exception/UserNotAuthorizedException";
 import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsernameOrPasswordException";
-import { response } from "express";
 import { AddressService } from "./AddressService";
 import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
 import { EmployeeDto } from "../dto/EmployeeDto";
+import { Employee } from "../entities/Employee";
+import { Address } from "../entities/Address";
 
 export class EmployeeService{
     
@@ -17,11 +18,11 @@ export class EmployeeService{
             
         }
         //getall
-        getAllEmployees(){
+        getAllEmployees():Promise <Employee[]>{
            return this.employeeRepo.getAllEmployees();
         }
         //create
-        public async createEmployee(employeeDetails:EmployeeDto) {
+        public async createEmployee(employeeDetails:EmployeeDto):Promise<EmployeeDto & Employee> {
             try {
           employeeDetails = {...employeeDetails, password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): ''}
 
@@ -32,8 +33,10 @@ export class EmployeeService{
             }
         }
         //update
-        public async updateEmployee(id: string, employeeDetails: UpdateEmployeeDto) {
+        public async updateEmployee(id: string, employeeDetails: UpdateEmployeeDto):Promise<Employee> {
             try{
+              const employee = await this.getEmployeebyId(id);
+              employeeDetails.address.id = employee.address.id;
               employeeDetails = {...employeeDetails, password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): ''}
             const save=await this.employeeRepo.updateEmployee(id,employeeDetails);
             return save;
@@ -43,7 +46,7 @@ export class EmployeeService{
         }
 
         //getemployeebyid
-        public async getEmployeebyId(employeeId: string) {
+        public async getEmployeebyId(employeeId: string):Promise <Employee>{
             const emp= await this.employeeRepo.getEmployeebyId(employeeId);
             if(!emp){
                 throw new EntityNotFoundException(ErrorCodes.EMPLOYEE_WITH_ID_NOT_FOUND);
@@ -52,7 +55,7 @@ export class EmployeeService{
         }
 
         //softdelete 
-        public async softdeleteEmployee(employeeId: string) {
+        public async softdeleteEmployee(employeeId: string): Promise<Employee> {
             return await this.employeeRepo.softdeleteEmployee(employeeId);
         }
 
@@ -60,12 +63,9 @@ export class EmployeeService{
         public async harddeleteEmployee(employeeId: string) {
           return await this.employeeRepo.hardDeleteEmployeeById(employeeId);
       }
-      
+
         // login
-     public employeeLogin = async (
-        username: string,
-        password: string
-      ) => {
+     public async employeeLogin (username: string,password: string) {
         const employeeDetails = await this.employeeRepo.getEmployeeByUsername(
           username
         );

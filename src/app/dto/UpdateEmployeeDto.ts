@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
 import { Allow, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { Address } from "../entities/Address";
 import { UpdateAddressDto } from "./UpdateAddressDto";
 
 
@@ -39,6 +40,6 @@ export class UpdateEmployeeDto{
 
     @ValidateNested({each:true})
     @Type(()=>UpdateAddressDto)
-    public address: UpdateAddressDto;
+    public address: Address;
 
 }

@@ -4,43 +4,43 @@ import { Address } from "./Address";
 import { Department } from "./Department";
 
 @Entity("employee")
-    export class Employee extends AbstractEntity {
-        @PrimaryGeneratedColumn("uuid")
-        public id: string;
-        
-        @Column({ nullable: false })
-        public name: string;
+export class Employee extends AbstractEntity {
+    @PrimaryGeneratedColumn("uuid")
+    public id: string;
 
-        @Column({ nullable: true })
-        public joiningdate: string;
+    @Column({ nullable: false })
+    public name: string;
 
-        @Column({ nullable: true })
-        public role: string;
+    @Column({ nullable: true })
+    public joiningdate: string;
 
-        @Column({ nullable: true })
-        public status: string;
+    @Column({ nullable: true })
+    public role: string;
 
-        @Column({ nullable: true })
-        public experience: number;
+    @Column({ nullable: true })
+    public status: string;
 
-        @Column({ nullable: true })
-        public username: string;
+    @Column({ nullable: true })
+    public experience: number;
 
-        @Column({ nullable: true })
-        public password: string;
+    @Column({ nullable: true })
+    public username: string;
 
-        @ManyToOne(() => Department, { cascade: true })
-            @JoinColumn()
-            public department: Department;
+    @Column({ nullable: true })
+    public password: string;
 
-            @Column({ nullable: true })
-            public departmentId: string;
+    @ManyToOne(() => Department, { cascade: true })
+    @JoinColumn()
+    public department: Department;
 
-        @OneToOne(()=> Address,{cascade:true})
-            @JoinColumn()
-            public address: Address;
-    
-            @Column({nullable: true})
-                public addressId:string;
+    @Column({ nullable: true })
+    public departmentId: string;
 
-    }
+    @OneToOne(() => Address, { cascade: true })
+    @JoinColumn()
+    public address: Address;
+
+    @Column({ nullable: true })
+    public addressId: string;
+
+}
