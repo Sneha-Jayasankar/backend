@@ -1,9 +1,5 @@
-import { plainToClass } from "class-transformer";
-import { getConnection } from "typeorm";
 import { AddressDto } from "../dto/AddressDto";
 import { UpdateAddressDto } from "../dto/UpdateAddressDto";
-import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
-import { Address } from "../entities/Address";
 import HttpException from "../exception/HttpException";
 import { AddressRepository } from "../repositories/AddressRepository";
 

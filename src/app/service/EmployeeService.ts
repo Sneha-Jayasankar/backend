@@ -10,7 +10,6 @@ import { AddressService } from "./AddressService";
 import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
 import { EmployeeDto } from "../dto/EmployeeDto";
 import { Employee } from "../entities/Employee";
-import { Address } from "../entities/Address";
 
 export class EmployeeService{
     

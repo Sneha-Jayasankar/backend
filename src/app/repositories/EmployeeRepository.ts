@@ -1,7 +1,6 @@
 import { getConnection } from "typeorm";
 import { EmployeeDto } from "../dto/EmployeeDto";
 import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
-import { Address } from "../entities/Address";
 import { Employee } from "../entities/Employee";
 
 export class EmployeeRepository{

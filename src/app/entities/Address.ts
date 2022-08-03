@@ -1,6 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { AbstractEntity } from "./Abstract";
-import { Employee } from "./Employee";
 
 @Entity("address")
     export class Address extends AbstractEntity {
