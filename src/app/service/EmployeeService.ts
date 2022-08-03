@@ -13,7 +13,7 @@ import { Employee } from "../entities/Employee";
 
 export class EmployeeService{
     
-        constructor(private employeeRepo:EmployeeRepository,private addressservice:AddressService){
+        constructor(private employeeRepo:EmployeeRepository){
             
         }
         //getall
@@ -57,11 +57,6 @@ export class EmployeeService{
         public async softdeleteEmployee(employeeId: string): Promise<Employee> {
             return await this.employeeRepo.softdeleteEmployee(employeeId);
         }
-
-        //harddelete-not caliing
-        public async harddeleteEmployee(employeeId: string) {
-          return await this.employeeRepo.hardDeleteEmployeeById(employeeId);
-      }
 
         // login
      public async employeeLogin (username: string,password: string) {

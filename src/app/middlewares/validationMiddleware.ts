@@ -13,10 +13,10 @@ import { ErrorCodes } from "../util/errorCode";
  */
 function validationMiddleware<T>(type: any, parameter: string, skipMissingProperties = false): express.RequestHandler {
   return (req, res, next) => {
-    let validatevariable:any;
+    let validatevariable: any;
 
-    if(parameter==APP_CONSTANTS.body) validatevariable=plainToClass(type,req.body)
-    else if(parameter==APP_CONSTANTS.params) validatevariable=plainToClass(type,req.params)
+    if (parameter === APP_CONSTANTS.body) validatevariable = plainToClass(type, req.body)
+    else if (parameter === APP_CONSTANTS.params) validatevariable = plainToClass(type, req.params)
     // const requestBody = plainToClass(type, req.body);
 
     validate(
@@ -26,7 +26,7 @@ function validationMiddleware<T>(type: any, parameter: string, skipMissingProper
           const errorDetail = ErrorCodes.VALIDATION_ERROR;
           next(new HttpException(400, errorDetail.MESSAGE, errorDetail.CODE, errors));
         } else {
-          if(parameter==APP_CONSTANTS.body)
+          if (parameter === APP_CONSTANTS.body)
             req.body = validatevariable;
 
           next();

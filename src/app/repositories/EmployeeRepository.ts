@@ -37,12 +37,6 @@ export class EmployeeRepository{
         return employeeRepo.softRemove(employee);
         }
 
-
-    //harddelete employee-not calling
-    public async hardDeleteEmployeeById(id: string) {
-        const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.delete({id});
-    }
     //login
 
     public async getEmployeeByUsername(username: string):Promise<Employee>  {
