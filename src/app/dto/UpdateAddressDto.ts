@@ -1,11 +1,11 @@
 import { IsString } from "class-validator";
 
-export class AddressDto {
+export class UpdateAddressDto{
     @IsString()
     public address_line1: string;
 
     @IsString()
-    public address_line2: string;
+    public address_line2: string
 
     @IsString()
     public city: string;

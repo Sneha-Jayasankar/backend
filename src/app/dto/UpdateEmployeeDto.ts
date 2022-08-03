@@ -1,4 +1,6 @@
+import { Type } from "class-transformer";
 import { Allow, IsEnum, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { UpdateAddressDto } from "./UpdateAddressDto";
 
 
 export class UpdateEmployeeDto{
@@ -34,5 +36,9 @@ export class UpdateEmployeeDto{
     @IsOptional()
     @IsString()
     public password?: string
+
+    @ValidateNested({each:true})
+    @Type(()=>UpdateAddressDto)
+    public address: UpdateAddressDto;
 
 }
