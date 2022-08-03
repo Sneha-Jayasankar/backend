@@ -7,7 +7,7 @@ export class EmployeeRepository{
     
     public async getAllEmployees() {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.find({ relations: ['department']});
+        return employeeRepo.find({ relations: ['department','address']});
     }
     
     //create employee
@@ -25,7 +25,7 @@ export class EmployeeRepository{
     //getemployeebyid
     public async getEmployeebyId(id:string) {
     const employeeRepo = getConnection().getRepository(Employee);
-    return employeeRepo.findOne(id);
+    return employeeRepo.findOne(id,{ relations: ['department','address']});
     }
 
     //delete employee
