@@ -13,6 +13,7 @@ import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsername
 import { response } from "express";
 import { AddressService } from "./AddressService";
 import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
+import { EmployeeDto } from "../dto/EmployeeDto";
 
 export class EmployeeService{
     
@@ -24,33 +25,12 @@ export class EmployeeService{
            return this.employeeRepo.getAllEmployees();
         }
         //create
-        public async createEmployee(employeeDetails: any) {
+        public async createEmployee(employeeDetails:EmployeeDto) {
             // console.log(id);
             try {
-              const newAddress = new Address()
-              if(employeeDetails.address){
-                
-                newAddress.address_line1= employeeDetails.address.address_line1,
-                newAddress.address_line2= employeeDetails.address.address_line2,
-                newAddress.city = employeeDetails.address.city,
-                newAddress.state = employeeDetails.address.state,
-                newAddress.pin = employeeDetails.address.pin
-          }
-                const newEmployee = new Employee();
-                newEmployee.name = employeeDetails.name
-                newEmployee.password = employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): ''
-                newEmployee.username = employeeDetails.username
-                newEmployee.role = employeeDetails.role
-                newEmployee.status = employeeDetails.status
-                newEmployee.experience = employeeDetails.experience
-                newEmployee.joiningdate = employeeDetails.joiningdate
-                newEmployee.departmentId=employeeDetails.departmentId
-                newEmployee.address = newAddress;
-            
-             
-          console.log(newEmployee)
+          employeeDetails = {...employeeDetails, password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): ''}
 
-                const save = await this.employeeRepo.saveEmployeeDetails(newEmployee);
+                const save = await this.employeeRepo.saveEmployeeDetails(employeeDetails);
                 return save;
             } catch (err) {
                 throw new HttpException(400, "Failed to create employee","failed");
@@ -59,6 +39,7 @@ export class EmployeeService{
         //update
         public async updateEmployee(id: string, employeeDetails: UpdateEmployeeDto) {
             try{
+              employeeDetails = {...employeeDetails, password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): ''}
             const save=await this.employeeRepo.updateEmployee(id,employeeDetails);
             return save;
         } catch (err) {
