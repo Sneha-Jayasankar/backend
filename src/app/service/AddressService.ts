@@ -1,5 +1,8 @@
 import { plainToClass } from "class-transformer";
 import { getConnection } from "typeorm";
+import { AddressDto } from "../dto/AddressDto";
+import { UpdateAddressDto } from "../dto/UpdateAddressDto";
+import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
 import { Address } from "../entities/Address";
 import HttpException from "../exception/HttpException";
 import { AddressRepository } from "../repositories/AddressRepository";
@@ -15,20 +18,9 @@ export class AddressService{
         }
 
         //create
-        public async createAddress(addressDetails: any) {
-            // console.log(id);
-            try {
-                const newAddress = plainToClass(Address, {
-                    
-                    address_line1: addressDetails.address_line1,
-                    address_line2:addressDetails.address_line2,
-                    city:addressDetails.city,
-                    state:addressDetails.city,
-                    pin:addressDetails.pin,
-                    // address_id:id,
-                });
-                // console.log(id);
-                const save = await this.addressRepo.saveAddressDetails(newAddress);
+        public async createAddress(addressDetails: AddressDto) {
+            try { 
+                const save = await this.addressRepo.saveAddressDetails(addressDetails);
                 return save;
             } catch (err) {
                 throw new HttpException(400, "Failed to create Address","failed");
@@ -36,19 +28,15 @@ export class AddressService{
         }
 
         //update
-        public async updateAddress(addressId:string,addressDetails: any) {
+        public async updateAddress(addressId:string,addressDetails: UpdateAddressDto) {
+            try{
+            const updateAddress = await this.addressRepo.updateAddress(addressId,addressDetails)
+                return updateAddress;
             
-            const addressRepo = getConnection().getRepository(Address);
-            const updateAddress = await addressRepo.update({ id: addressId, deletedAt: null }, {
-                address_line1: addressDetails.address_line1,
-                address_line2:addressDetails.address_line2,
-                city:addressDetails.city,
-                state:addressDetails.state,
-                pin:addressDetails.pin
-            });
-
-            return updateAddress;
-        }
+            } catch (err) {
+                throw new HttpException(400, "Failed to update employee","failed");
+            }
+    }
 
         //get Address by id
         public async getAddressbyId(addressId: string) {

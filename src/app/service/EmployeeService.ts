@@ -1,7 +1,3 @@
-import { plainToClass } from "class-transformer";
-import { getConnection } from "typeorm";
-import { Address } from "../entities/Address";
-import { Employee } from "../entities/Employee";
 import EntityNotFoundException from "../exception/EntityNotFoundException";
 import HttpException from "../exception/HttpException";
 import { EmployeeRepository } from "../repositories/EmployeeRepository";
@@ -26,7 +22,6 @@ export class EmployeeService{
         }
         //create
         public async createEmployee(employeeDetails:EmployeeDto) {
-            // console.log(id);
             try {
           employeeDetails = {...employeeDetails, password: employeeDetails.password ?  await bcrypt.hash(employeeDetails.password, 10): ''}
 
@@ -65,8 +60,8 @@ export class EmployeeService{
         public async harddeleteEmployee(employeeId: string) {
           return await this.employeeRepo.hardDeleteEmployeeById(employeeId);
       }
+      
         // login
-
      public employeeLogin = async (
         username: string,
         password: string

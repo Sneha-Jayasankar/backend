@@ -1,5 +1,7 @@
 import { plainToClass } from "class-transformer";
 import { getConnection } from "typeorm";
+import { DepartmentDto } from "../dto/DepartmentDto";
+import { UpdateDepartmentDto } from "../dto/UpdateDepartmentDto";
 import { Department } from "../entities/Department";
 import EntityNotFoundException from "../exception/EntityNotFoundException";
 import HttpException from "../exception/HttpException";
@@ -17,12 +19,9 @@ export class DepartmentService{
         }
 
         //create
-        public async createDepartment(departmentDetails: any) {
+        public async createDepartment(departmentDetails: DepartmentDto) {
             try {
-                const newDepartment = plainToClass(Department, {
-                    name: departmentDetails.name
-                });
-                const save = await this.departmentRepo.saveDepartmentDetails(newDepartment);
+                const save = await this.departmentRepo.saveDepartmentDetails(departmentDetails);
                 return save;
             } catch (err) {
                 throw new HttpException(400, "Failed to create Department","failed");
@@ -30,12 +29,9 @@ export class DepartmentService{
         }
 
         //update
-        public async updateDepartment(departmentId: string, departmentDetails: any) {
+        public async updateDepartment(departmentId: string, departmentDetails: UpdateDepartmentDto) {
         
-            const departmentRepo = getConnection().getRepository(Department);
-            const updateDepartment = await departmentRepo.update({ id: departmentId, deletedAt: null }, {
-                name: departmentDetails.name ? departmentDetails.name : undefined,
-            });
+            const updateDepartment = await this.departmentRepo.updateDepartment(departmentId,departmentDetails)
             if(!updateDepartment){
                 throw new EntityNotFoundException(ErrorCodes.EMPLOYEE_WITH_ID_NOT_FOUND);
             }
