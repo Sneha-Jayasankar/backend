@@ -16,7 +16,6 @@ export class AddressRepository{
 
     //update
     public async updateAddress(id:string,addressDetails: Address) {
-        // console.log(id);
         const addressRepo = getConnection().getRepository(Address);
         return addressRepo.update(id,addressDetails);
     }

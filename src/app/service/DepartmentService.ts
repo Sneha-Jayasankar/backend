@@ -21,10 +21,6 @@ export class DepartmentService{
             try {
                 const newDepartment = plainToClass(Department, {
                     name: departmentDetails.name
-                    // username: DepartmentDetails.username,
-                    // age: DepartmentDetails.age,
-                   
-                    // isActive: true,
                 });
                 const save = await this.departmentRepo.saveDepartmentDetails(newDepartment);
                 return save;
@@ -35,10 +31,14 @@ export class DepartmentService{
 
         //update
         public async updateDepartment(departmentId: string, departmentDetails: any) {
+        
             const departmentRepo = getConnection().getRepository(Department);
             const updateDepartment = await departmentRepo.update({ id: departmentId, deletedAt: null }, {
                 name: departmentDetails.name ? departmentDetails.name : undefined,
             });
+            if(!updateDepartment){
+                throw new EntityNotFoundException(ErrorCodes.EMPLOYEE_WITH_ID_NOT_FOUND);
+            }
             return updateDepartment;
         }
 
@@ -54,8 +54,8 @@ export class DepartmentService{
 
         // delete
         public async deleteDepartment(departmentId:string){
-            return await this.departmentRepo.deleteDepartment(departmentId);
-
+            const deletevariable= await this.departmentRepo.deleteDepartment(departmentId);
+            return deletevariable;
         }
 
 }

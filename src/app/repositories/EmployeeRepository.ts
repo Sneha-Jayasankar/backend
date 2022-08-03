@@ -1,4 +1,6 @@
 import { getConnection } from "typeorm";
+import { EmployeeDto } from "../dto/EmployeeDto";
+import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
 import { Employee } from "../entities/Employee";
 
 export class EmployeeRepository{
@@ -11,15 +13,15 @@ export class EmployeeRepository{
     }
     
     //create employee
-    public async saveEmployeeDetails(employeeDetails: Employee) {
+    public async saveEmployeeDetails(employeeDetails: EmployeeDto) {
         const employeeRepo = getConnection().getRepository(Employee);
         return employeeRepo.save(employeeDetails);
     }
 
     //updateemployee
-    public async updateEmployee(id:string, employeeDetails:Employee) {
+    public async updateEmployee(id:string, employeeDetails:UpdateEmployeeDto) {
         const employeeRepo = getConnection().getRepository(Employee);
-        return employeeRepo.update(id,employeeDetails);
+        return employeeRepo.save(employeeDetails);
     }
 
     //getemployeebyid

@@ -6,6 +6,8 @@ import { DepartmentService } from "../service/DepartmentService";
 import validationMiddleware from "../middlewares/validationMiddleware";
 import { DepartmentDto } from "../dto/DepartmentDto";
 import { ParameterValidationDto } from "../dto/ParametervalidationDto";
+import { UpdateDepartmentDto } from "../dto/UpdateDepartmentDto";
+import authorizationMiddleware from "../middlewares/authorizationMiddleware";
 
 class DepartmentController extends AbstractController {
   constructor(private departmentservice:DepartmentService) {
@@ -15,11 +17,32 @@ class DepartmentController extends AbstractController {
 
   //routes
   protected initializeRoutes() {
+    //getall
     this.router.get(`${this.path}`, this.getalldepartments);
-    this.router.post(`${this.path}`,validationMiddleware(DepartmentDto,APP_CONSTANTS.body), this.createdepartment);
-    this.router.put(`${this.path}/:id`,validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params), this.updatedepartment);
-    this.router.get(`${this.path}/:id`,validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params), this.getdepartmentbyid);
-    this.router.delete(`${this.path}/:id`,validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params), this.deletedepartment);
+
+    //create
+    this.router.post(`${this.path}`,
+    authorizationMiddleware(['admin','hr']),
+    validationMiddleware(DepartmentDto,APP_CONSTANTS.body),
+     this.createdepartment);
+
+     //update
+    this.router.put(`${this.path}/:id`,
+    authorizationMiddleware(['admin','hr']),
+    validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params),
+    validationMiddleware(UpdateDepartmentDto,APP_CONSTANTS.body),
+    this.updatedepartment);
+
+    //getbyid
+    this.router.get(`${this.path}/:id`,
+    validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params),
+    this.getdepartmentbyid);
+
+    //delete
+    this.router.delete(`${this.path}/:id`,
+    authorizationMiddleware(['admin','hr']),
+    validationMiddleware(ParameterValidationDto,APP_CONSTANTS.params),
+    this.deletedepartment);
   }
 
   //functions

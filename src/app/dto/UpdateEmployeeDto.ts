@@ -31,7 +31,7 @@ export class UpdateEmployeeDto{
 
     @IsOptional()
     @IsString()
-    public addressId: string
+    public addressId?: string
 
     @IsOptional()
     @IsString()

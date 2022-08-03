@@ -47,11 +47,7 @@ export class AddressService{
                 pin:addressDetails.pin
             });
 
-            // const updateAddress=await addressRepo
             return updateAddress;
-            
-           
-            // return await this.addressRepo.updateAddress(id,addressDetails);
         }
 
         //get Address by id

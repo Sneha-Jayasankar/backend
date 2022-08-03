@@ -12,6 +12,7 @@ import UserNotAuthorizedException from "../exception/UserNotAuthorizedException"
 import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsernameOrPasswordException";
 import { response } from "express";
 import { AddressService } from "./AddressService";
+import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
 
 export class EmployeeService{
     
@@ -56,29 +57,10 @@ export class EmployeeService{
             }
         }
         //update
-        public async updateEmployee(employeeId: string, employeeDetails: any) {
+        public async updateEmployee(id: string, employeeDetails: UpdateEmployeeDto) {
             try{
-            const employeeRepo = getConnection().getRepository(Employee);
-            // const addressRepo=getConnection().getRepository(Address);
-            const updateaddress = plainToClass(Address, {
-              id: employeeDetails.addressId,
-              address_line1:employeeDetails.address_line1,
-              address_line2:employeeDetails.address_line2,
-              city: employeeDetails.city,
-              state: employeeDetails.state,
-              pin: employeeDetails.pin
-            })
-            const updateEmployee = await employeeRepo.update({ id: employeeId, deletedAt: null }, {
-                name: employeeDetails.name ? employeeDetails.name : undefined,
-                departmentId: employeeDetails.departmentId ? employeeDetails.departmentId:undefined,
-                joiningdate:employeeDetails.joiningdate? employeeDetails.joiningdate:undefined,
-                role:employeeDetails.role? employeeDetails.role:undefined,
-                status:employeeDetails.status? employeeDetails.status:undefined,
-                experience:employeeDetails.experience? employeeDetails.experience:undefined,
-                
-            });
-            await this.addressservice.updateAddress(employeeDetails.addressId,updateaddress);
-            return updateEmployee;
+            const save=await this.employeeRepo.updateEmployee(id,employeeDetails);
+            return save;
         } catch (err) {
             throw new HttpException(400, "Failed to update employee","failed");
         }
