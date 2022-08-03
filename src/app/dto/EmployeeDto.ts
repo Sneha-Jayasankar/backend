@@ -30,12 +30,11 @@ export class EmployeeDto {
     @IsString()
     public password: string;
 
-    // @ValidateIf(o=>o.address.id==null)
     @ValidateNested({each:true})
     @Type(()=>AddressDto)
     public address: AddressDto;
 
-    // @ValidateNested({each: true})
-    // @Type(()=>DepartmentDto)
-    // public department?: DepartmentDto
+    @ValidateNested({each: true})
+    @Type(()=>DepartmentDto)
+    public department?: DepartmentDto
 }
