@@ -6,7 +6,6 @@ import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
 import UserNotAuthorizedException from "../exception/UserNotAuthorizedException";
 import IncorrectUsernameOrPasswordException from "../exception/IncorrectUsernameOrPasswordException";
-import { AddressService } from "./AddressService";
 import { UpdateEmployeeDto } from "../dto/UpdateEmployeeDto";
 import { EmployeeDto } from "../dto/EmployeeDto";
 import { Employee } from "../entities/Employee";
